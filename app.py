@@ -24,8 +24,8 @@ MIN_BODY_PERCENT = 0.30      # breakout candle body vs range (0..1)
 RECENT_P3_MAX_AGE = 40       # candles
 
 # Sideways
-SIDEWAYS_BARS = 12
-SIDEWAYS_OVERLAP_COUNT = 7
+SIDEWAYS_BARS = 20
+SIDEWAYS_OVERLAP_COUNT = 15
 
 # Backtest
 BACKTEST_SIGNALS = 30
