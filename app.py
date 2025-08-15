@@ -18,8 +18,8 @@ ZZ_ATR_MULT = 1.0
 MAX_SWINGS = 80
 
 # CWRV 1-2-3
-FIB_MIN = 0.30
-FIB_MAX = 0.618
+FIB_MIN = 0.236
+FIB_MAX = 0.786
 MIN_BODY_PERCENT = 0.25     # breakout candle body vs range (0..1)
 RECENT_P3_MAX_AGE = 50       # candles
 
