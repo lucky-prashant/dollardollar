@@ -251,36 +251,23 @@ def detect_pattern(candles):
         #return overlaps >= SIDEWAYS_OVERLAP_COUNT
     #except Exception:
         #return 
-def sideways_filter(candles):
+def detect_sideways(candles):
     """Detect sideways market based on price range overlap zone."""
-    try:
-        if len(candles) < SIDEWAYS_BARS:
-            return False
+    closes = [c['close'] for c in candles]
+    highs = [c['high'] for c in candles]
+    lows = [c['low'] for c in candles]
 
-        # Take the last N candles
-        last = candles[-SIDEWAYS_BARS:]
-        closes = [c["c"] for c in last]
+    max_price = max(highs)
+    min_price = min(lows)
+    price_range = max_price - min_price
 
-        # Find high-low range
-        max_price = max(closes)
-        min_price = min(closes)
-        price_range = max_price - min_price
-        if price_range == 0:
-            return True  # Completely flat
+    overlap_min = min_price + price_range * 0.25
+    overlap_max = max_price - price_range * 0.25
 
-        # Define overlap zone (middle 50% of range)
-        overlap_min = min_price + price_range * 0.25
-        overlap_max = max_price - price_range * 0.25
+    sideways_bars = sum(overlap_min <= c['close'] <= overlap_max for c in candles)
 
-        # Count how many candles are inside this overlap zone
-        overlaps = sum(1 for close in closes if overlap_min <= close <= overlap_max)
+    return sideways_bars > len(candles) * 0.7
 
-        # Sideways only if enough candles are inside the overlap zone
-        return overlaps >= SIDEWAYS_OVERLAP_COUNT
-
-    except Exception as e:
-        log(f"sideways_filter error: {e}")
-        return False
 
 
 # =================== ELLIOTT WAVE (HEURISTICS) ===================
