@@ -251,7 +251,7 @@ def detect_pattern(candles):
         #return overlaps >= SIDEWAYS_OVERLAP_COUNT
     #except Exception:
         #return 
-        def sideways_filter(candles):
+def sideways_filter(candles):
     """Detect sideways market based on price range overlap zone."""
     try:
         if len(candles) < SIDEWAYS_BARS:
