@@ -199,7 +199,7 @@ def zigzag_swings(candles, atr_mult=ZZ_ATR_MULT, max_keep=MAX_SWINGS):
 
 def market_structure(swings):
     try:
-        if len(swings) < 10:
+        if len(swings) < 2:
             return "sideways", "few swings"
         highs = [s for s in swings if s["type"] == "H"]
         lows  = [s for s in swings if s["type"] == "L"]
