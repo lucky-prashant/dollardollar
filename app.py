@@ -197,7 +197,7 @@ def zigzag_swings(candles, atr_mult=ZZ_ATR_MULT, max_keep=MAX_SWINGS):
         return []
 
 
-def market_structure(swings):
+"""def market_structure(swings):
     try:
         if len(swings) < 5:
             return "sideways", "few swings"
@@ -211,8 +211,35 @@ def market_structure(swings):
         return "sideways", "mixed"
     except Exception as e:
         log(f"market_structure error: {e}")
-        return "sideways", "error"
+        return "sideways", "error"""
+        
+def market_structure(swings, tolerance=0.0001):
+    try:
+        if len(swings) < 5:
+            return "sideways", "few swings"
 
+        highs = [s for s in swings if s["type"] == "H"]
+        lows  = [s for s in swings if s["type"] == "L"]
+
+        def higher(a, b):
+            return (b - a) > tolerance
+
+        def lower(a, b):
+            return (a - b) > tolerance
+
+        if len(highs) >= 3 and len(lows) >= 3:
+            if higher(highs[-3]["price"], highs[-2]["price"]) and higher(highs[-2]["price"], highs[-1]["price"]) \
+               and higher(lows[-3]["price"], lows[-2]["price"]) and higher(lows[-2]["price"], lows[-1]["price"]):
+                return "up", "HH & HL"
+
+            if lower(highs[-3]["price"], highs[-2]["price"]) and lower(highs[-2]["price"], highs[-1]["price"]) \
+               and lower(lows[-3]["price"], lows[-2]["price"]) and lower(lows[-2]["price"], lows[-1]["price"]):
+                return "down", "LH & LL"
+
+        return "sideways", "mixed"
+    except Exception as e:
+        log(f"market_structure error: {e}")
+        return "sideways", "error"
 
 def detect_pattern(candles):
     """Simple candle helpers for confluence."""
