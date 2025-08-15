@@ -236,20 +236,50 @@ def detect_pattern(candles):
         return None
 
 
-def sideways_filter(candles):
-    """Detect boxy overlap in last N bars."""
+#def sideways_filter(candles):
+   # """Detect boxy overlap in last N bars."""
+    #try:
+        #if len(candles) < SIDEWAYS_BARS: return False
+        #last = candles[-SIDEWAYS_BARS:]
+        #overlaps = 0
+        #for i in range(1, len(last)):
+            #a, b = last[i-1], last[i]
+            #a_lo, a_hi = min(a["o"], a["c"]), max(a["o"], a["c"])
+            #b_lo, b_hi = min(b["o"], b["c"]), max(b["o"], b["c"])
+            #if (b_lo >= a_lo and b_hi <= a_hi) or (a_lo >= b_lo and a_hi <= b_hi):
+                #overlaps += 1
+        #return overlaps >= SIDEWAYS_OVERLAP_COUNT
+    #except Exception:
+        #return 
+        def sideways_filter(candles):
+    """Detect sideways market based on price range overlap zone."""
     try:
-        if len(candles) < SIDEWAYS_BARS: return False
+        if len(candles) < SIDEWAYS_BARS:
+            return False
+
+        # Take the last N candles
         last = candles[-SIDEWAYS_BARS:]
-        overlaps = 0
-        for i in range(1, len(last)):
-            a, b = last[i-1], last[i]
-            a_lo, a_hi = min(a["o"], a["c"]), max(a["o"], a["c"])
-            b_lo, b_hi = min(b["o"], b["c"]), max(b["o"], b["c"])
-            if (b_lo >= a_lo and b_hi <= a_hi) or (a_lo >= b_lo and a_hi <= b_hi):
-                overlaps += 1
+        closes = [c["c"] for c in last]
+
+        # Find high-low range
+        max_price = max(closes)
+        min_price = min(closes)
+        price_range = max_price - min_price
+        if price_range == 0:
+            return True  # Completely flat
+
+        # Define overlap zone (middle 50% of range)
+        overlap_min = min_price + price_range * 0.25
+        overlap_max = max_price - price_range * 0.25
+
+        # Count how many candles are inside this overlap zone
+        overlaps = sum(1 for close in closes if overlap_min <= close <= overlap_max)
+
+        # Sideways only if enough candles are inside the overlap zone
         return overlaps >= SIDEWAYS_OVERLAP_COUNT
-    except Exception:
+
+    except Exception as e:
+        log(f"sideways_filter error: {e}")
         return False
 
 
