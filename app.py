@@ -18,14 +18,14 @@ ZZ_ATR_MULT = 1.0
 MAX_SWINGS = 80
 
 # CWRV 1-2-3
-FIB_MIN = 0.382
+FIB_MIN = 0.30
 FIB_MAX = 0.618
-MIN_BODY_PERCENT = 0.30      # breakout candle body vs range (0..1)
-RECENT_P3_MAX_AGE = 40       # candles
+MIN_BODY_PERCENT = 0.25     # breakout candle body vs range (0..1)
+RECENT_P3_MAX_AGE = 50       # candles
 
 # Sideways
-SIDEWAYS_BARS = 20
-SIDEWAYS_OVERLAP_COUNT = 9
+SIDEWAYS_BARS = 15
+SIDEWAYS_OVERLAP_COUNT = 6
 
 # Backtest
 BACKTEST_SIGNALS = 30
@@ -555,9 +555,9 @@ def analyze_pair(symbol):
         if signal == "SIDEWAYS" or is_sideways:
             status = "NO TRADE"
         else:
-            if conf >= 70 and accuracy >= 75:
+            if conf >= 65 and accuracy >= 75:
                 status = "TRADE"
-            elif conf >= 50 and accuracy >= 60:
+            elif conf >= 45 and accuracy >= 55:
                 status = "RISKY"
             else:
                 status = "NO TRADE"
