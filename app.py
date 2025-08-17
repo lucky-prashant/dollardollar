@@ -116,7 +116,7 @@ def fetch_candles(symbol, interval=INTERVAL, outputsize=OUTPUTSIZE):
 # =================== INDICATORS ===================
 def compute_atr(highs, lows, closes, period=ATR_PERIOD):
     try:
-        if len(closes) < 2:
+        if len(closes) < 5:
             return 0.0
         trs = []
         for i in range(1, len(closes)):
