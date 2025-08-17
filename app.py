@@ -213,7 +213,7 @@ def zigzag_swings(candles, atr_mult=ZZ_ATR_MULT, max_keep=MAX_SWINGS):
         log(f"market_structure error: {e}")
         return "sideways", "error"""
         
-def market_structure(swings, tolerance=0.0001):
+'''def market_structure(swings, tolerance=0.0001):
     try:
         if len(swings) < 5:
             return "sideways", "few swings"
@@ -237,6 +237,46 @@ def market_structure(swings, tolerance=0.0001):
                 return "down", "LH & LL"
 
         return "sideways", "mixed"
+    except Exception as e:
+        log(f"market_structure error: {e}")
+        return "sideways", "error"'''
+        
+        def market_structure(swings, candles, overlap_bars=5):
+    try:
+        if len(swings) < 2:
+            return "sideways", "few swings"
+
+        # ---- 1. Uptrend check ----
+        for i in range(1, len(swings)):
+            if swings[i]["type"] == "H" and swings[i]["price"] > swings[i-1]["price"]:
+                # found HH
+                for j in range(i+1, len(swings)):
+                    if swings[j]["type"] == "L" and swings[j]["price"] > swings[i-1]["price"]:
+                        return "up", "min 1HH + 1HL"
+
+        # ---- 2. Downtrend check ----
+        for i in range(1, len(swings)):
+            if swings[i]["type"] == "L" and swings[i]["price"] < swings[i-1]["price"]:
+                # found LL
+                for j in range(i+1, len(swings)):
+                    if swings[j]["type"] == "H" and swings[j]["price"] < swings[i-1]["price"]:
+                        return "down", "min 1LL + 1LH"
+
+        # ---- 3. Sideways check by candle overlap ----
+        overlap = 0
+        for i in range(1, len(candles)):
+            prev = candles[i-1]
+            curr = candles[i]
+            prev_dir = "green" if prev["c"] > prev["o"] else "red"
+            curr_dir = "green" if curr["c"] > curr["o"] else "red"
+            if prev_dir != curr_dir:
+                overlap += 1
+                if overlap >= overlap_bars:
+                    return "sideways", f"{overlap_bars}+ alternating candles"
+            else:
+                overlap = 0  # reset streak
+
+        return "sideways", "no clear trend"
     except Exception as e:
         log(f"market_structure error: {e}")
         return "sideways", "error"
