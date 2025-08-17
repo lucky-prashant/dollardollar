@@ -13,7 +13,7 @@ OUTPUTSIZE = 220
 LOCAL_TZ = pytz.timezone("Asia/Kolkata")
 
 # ZigZag / ATR
-ATR_PERIOD = 14
+ATR_PERIOD = 6
 ZZ_ATR_MULT = 1.0
 MAX_SWINGS = 80
 
