@@ -213,7 +213,31 @@ def zigzag_swings(candles, atr_mult=ZZ_ATR_MULT, max_keep=MAX_SWINGS):
         log(f"market_structure error: {e}")
         return "sideways", "error"""
         
-def market_structure(swings, tolerance=0.0001):
+        def market_structure(swings):
+    try:
+        if len(swings) < 3:  # need at least 2 swings
+            return "sideways", "few swings"
+
+        highs = [s for s in swings if s["type"] == "H"]
+        lows  = [s for s in swings if s["type"] == "L"]
+
+        # Uptrend check (less strict) → only 1 HH + 1 HL required
+        if len(highs) >= 2 and len(lows) >= 2:
+            if highs[-2]["price"] < highs[-1]["price"] and lows[-2]["price"] < lows[-1]["price"]:
+                return "up", "HH & HL"
+
+        # Downtrend check (less strict) → only 1 LH + 1 LL required
+        if len(highs) >= 2 and len(lows) >= 2:
+            if highs[-2]["price"] > highs[-1]["price"] and lows[-2]["price"] > lows[-1]["price"]:
+                return "down", "LH & LL"
+
+        # If not trending, then sideways
+        return "sideways", "mixed"
+    except Exception as e:
+        log(f"market_structure error: {e}")
+        return "sideways", "error"
+        
+'''def market_structure(swings, tolerance=0.0001):
     try:
         if len(swings) < 5:
             return "sideways", "few swings"
@@ -239,7 +263,7 @@ def market_structure(swings, tolerance=0.0001):
         return "sideways", "mixed"
     except Exception as e:
         log(f"market_structure error: {e}")
-        return "sideways", "error"
+        return "sideways", "error"'''
         
 '''def market_structure(swings, candles, overlap_bars=5):
     try:
