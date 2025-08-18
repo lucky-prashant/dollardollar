@@ -213,7 +213,7 @@ def zigzag_swings(candles, atr_mult=ZZ_ATR_MULT, max_keep=MAX_SWINGS):
         log(f"market_structure error: {e}")
         return "sideways", "error"""
         
-'''def market_structure(swings, tolerance=0.0001):
+def market_structure(swings, tolerance=0.0001):
     try:
         if len(swings) < 5:
             return "sideways", "few swings"
@@ -239,9 +239,9 @@ def zigzag_swings(candles, atr_mult=ZZ_ATR_MULT, max_keep=MAX_SWINGS):
         return "sideways", "mixed"
     except Exception as e:
         log(f"market_structure error: {e}")
-        return "sideways", "error"'''
+        return "sideways", "error"
         
-def market_structure(swings, candles, overlap_bars=5):
+'''def market_structure(swings, candles, overlap_bars=5):
     try:
         if len(swings) < 2:
             return "sideways", "few swings"
@@ -279,7 +279,7 @@ def market_structure(swings, candles, overlap_bars=5):
         return "sideways", "no clear trend"
     except Exception as e:
         log(f"market_structure error: {e}")
-        return "sideways", "error"
+        return "sideways", "error"'''
 
 def detect_pattern(candles):
     """Simple candle helpers for confluence."""
