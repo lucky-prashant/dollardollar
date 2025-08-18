@@ -13,7 +13,7 @@ OUTPUTSIZE = 220
 LOCAL_TZ = pytz.timezone("Asia/Kolkata")
 
 # ZigZag / ATR
-ATR_PERIOD = 6
+ATR_PERIOD = 14
 ZZ_ATR_MULT = 1.0
 MAX_SWINGS = 80
 
@@ -25,7 +25,7 @@ RECENT_P3_MAX_AGE = 50       # candles
 
 # Sideways
 SIDEWAYS_BARS = 15
-SIDEWAYS_OVERLAP_COUNT = 12
+SIDEWAYS_OVERLAP_COUNT = 6
 
 # Backtest
 BACKTEST_SIGNALS = 30
