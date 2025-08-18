@@ -213,7 +213,7 @@ def zigzag_swings(candles, atr_mult=ZZ_ATR_MULT, max_keep=MAX_SWINGS):
         log(f"market_structure error: {e}")
         return "sideways", "error"""
         
-        def market_structure(swings):
+def market_structure(swings):
     try:
         if len(swings) < 3:  # need at least 2 swings
             return "sideways", "few swings"
